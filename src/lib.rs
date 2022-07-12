@@ -186,6 +186,10 @@ where
         self.search_tokens(&[pattern])
     }
 
+    pub fn search_with_scores(&self, pattern: &str) -> Vec<(Id, f64)> {
+        self.search_tokens_with_scores(&[pattern])
+    }
+
     /// Searches pattern tokens and returns ids sorted by relevance.
     ///
     /// Search engine also applies tokenizer to the
@@ -211,6 +215,13 @@ where
     /// assert_eq!(results, &[1]);
     /// ```
     pub fn search_tokens(&self, pattern_tokens: &[&str]) -> Vec<Id> {
+        self.search_tokens_with_scores(pattern_tokens)
+            .into_iter()
+            .map(|(id, _)| id)
+            .collect()
+    }
+
+    pub fn search_tokens_with_scores(&self, pattern_tokens: &[&str]) -> Vec<(Id, f64)> {
         let mut pattern_tokens = self.tokenize(pattern_tokens);
         pattern_tokens.sort();
         pattern_tokens.dedup();
@@ -250,15 +261,18 @@ where
         let mut result_scores: Vec<(usize, f64)> = result_scores.drain().collect();
         result_scores.sort_by(|lhs, rhs| rhs.1.partial_cmp(&lhs.1).unwrap());
 
-        let result_ids: Vec<Id> = result_scores
+        let result_ids: Vec<(Id, f64)> = result_scores
             .iter()
-            .map(|(id_num, _)| {
-                self.reverse_ids_map
-                    .get(id_num)
-                    // this can go wrong only if something (e.g. delete) leaves us in an
-                    // inconsistent state
-                    .expect("id at id_num should be there")
-                    .to_owned()
+            .map(|(id_num, score)| {
+                (
+                    self.reverse_ids_map
+                        .get(id_num)
+                        // this can go wrong only if something (e.g. delete) leaves us in an
+                        // inconsistent state
+                        .expect("id at id_num should be there")
+                        .to_owned(),
+                    *score,
+                )
             })
             .collect();
 
