@@ -27,8 +27,8 @@
 //! let mut engine: SimSearch<u32> = SimSearch::new_with(options);
 //! ```
 
+use hashbrown::HashMap;
 use std::cmp::max;
-use std::collections::HashMap;
 use std::f64;
 use std::hash::Hash;
 

@@ -15,9 +15,13 @@ exclude = ["books.json"]
 keywords = ["fuzzy", "search", "lightweight", "pattern", "strsim"]
 categories = ["algorithms", "text-processing"]
 
+[features]
+serde = ["dep:serde", "hashbrown/serde"]
+
 [dependencies]
 strsim = "0.10"
 triple_accel = "0.4"
+hashbrown = "0.12"
 
 [dependencies.serde]
 version = "1.0"
