@@ -17,7 +17,7 @@ categories = ["algorithms", "text-processing"]
 
 [dependencies]
 strsim = "0.10"
-triple_accel = "0.3.4"
+triple_accel = "0.4"
 
 [dependencies.serde]
 version = "1.0"
