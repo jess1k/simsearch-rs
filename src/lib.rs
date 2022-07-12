@@ -282,13 +282,13 @@ where
     /// Deletes entry by id.
     pub fn delete(&mut self, id: &Id) {
         if let Some(id_num) = self.ids_map.get(id) {
-            for token in &self.forward_map[&id_num] {
+            for token in &self.forward_map[id_num] {
                 self.reverse_map
                     .get_mut(token)
                     .unwrap()
                     .retain(|i| i != id_num);
             }
-            self.forward_map.remove(&id_num);
+            self.forward_map.remove(id_num);
             self.reverse_ids_map.remove(id_num);
             self.ids_map.remove(id);
         };
