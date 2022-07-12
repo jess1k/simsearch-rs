@@ -1,6 +1,6 @@
 [package]
 authors = ["andylokandy <andylokandy@hotmail.com>"]
-edition = "2018"
+edition = "2021"
 name = "simsearch"
 version = "0.2.3"
 license = "MIT/Apache-2.0"
